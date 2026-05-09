@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frankie</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "sans-serif"] },
+            colors: { brand: "#2563eb" },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* ===== SCROLLBAR ===== */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f9fafb;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+      }
+
+      /* ===== CURSOR GLOW ===== */
+      .cursor-glow {
+        position: fixed;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.07) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition:
+          left 0.12s ease,
+          top 0.12s ease;
+        z-index: 0;
+      }
+
+      /* ===== PRELOADER ===== */
+      #preloader {
+        position: fixed;
+        inset: 0;
+        background: #fff;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.6s ease;
+      }
+      .loader-bar {
+        width: 140px;
+        height: 3px;
+        background: #f3f4f6;
+        border-radius: 99px;
+        overflow: hidden;
+        margin-top: 18px;
+      }
+      .loader-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #2563eb, #06b6d4);
+        border-radius: 99px;
+        animation: loadFill 1.4s ease forwards;
+      }
+      @keyframes loadFill {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      /* ===== FADE IN UP (scroll reveal) ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(36px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+      .reveal-delay-4 {
+        transition-delay: 0.4s;
+      }
+
+      /* ===== HERO ANIMATIONS ===== */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hero-tag {
+        animation: fadeUp 0.6s ease 0.3s both;
+      }
+      .hero-h1 {
+        animation: fadeUp 0.6s ease 0.5s both;
+      }
+      .hero-sub {
+        animation: fadeUp 0.6s ease 0.7s both;
+      }
+      .hero-btns {
+        animation: fadeUp 0.6s ease 0.9s both;
+      }
+      .hero-social {
+        animation: fadeUp 0.6s ease 1.1s both;
+      }
+
+      /* ===== FLOATING BLOB ===== */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.18;
+        animation: blobFloat 8s ease-in-out infinite;
+        pointer-events: none;
+      }
+      @keyframes blobFloat {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-28px) scale(1.06);
+        }
+      }
+
+      /* ===== TYPING CURSOR ===== */
+      .typed-cursor {
+        display: inline-block;
+        width: 3px;
+        height: 1em;
+        background: #2563eb;
+        margin-left: 4px;
+        vertical-align: middle;
+        animation: blink 0.9s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ===== SKILL TAGS FLOAT ===== */
+      .skill-tag {
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .skill-tag:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.13);
+        border-color: #2563eb;
+        color: #2563eb;
+      }
+
+      /* ===== CARD HOVER ===== */
+      .port-card {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .port-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      }
+
+      /* ===== TIMELINE DOT PULSE ===== */
+      .timeline-dot-active {
+        position: relative;
+      }
+      .timeline-dot-active::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid #2563eb;
+        opacity: 0;
+        animation: dotPulse 2s ease-in-out infinite;
+      }
+      @keyframes dotPulse {
+        0% {
+          opacity: 0.5;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(2);
+        }
+      }
+
+      /* ===== GRADIENT TEXT SHIMMER ===== */
+      .shimmer-text {
+        background: linear-gradient(90deg, #2563eb, #06b6d4, #2563eb);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+      }
+      @keyframes shimmer {
+        from {
+          background-position: 0% center;
+        }
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      /* ===== NAV LINK UNDERLINE ===== */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #2563eb;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* ===== SERVICE CARD ===== */
+      .service-card {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .service-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(37, 99, 235, 0.1);
+      }
+
+      /* ===== NOTABLE CARD ===== */
+      .notable-card {
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .notable-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.09);
+      }
+
+      /* ===== COUNT UP ===== */
+      .stat-number {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ===== BACK TO TOP ===== */
+      #btn-back-to-top {
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+      }
+      #btn-back-to-top:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gray-50 text-gray-800 antialiased font-sans selection:bg-brand selection:text-white overflow-x-hidden"
+  >
+    <!-- Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div>
+        <span class="text-3xl font-bold tracking-tighter text-gray-900"
+          >Frankie<span class="text-brand">.</span></span
+        >
+      </div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    </div>
+
+    <!-- Back to top -->
+    <button
+      id="btn-back-to-top"
+      class="fixed bottom-6 right-6 w-12 h-12 bg-brand text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none z-50 hover:bg-blue-700"
+    >
+      <i class="bx bx-up-arrow-alt text-2xl"></i>
+    </button>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav
+      class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100 transition-all duration-300"
+      id="navbar"
+    >
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a
+            href="#home"
+            class="text-xl font-bold tracking-tighter text-gray-900"
+            >Frankie<span class="text-brand">.</span></a
+          >
+          <div class="hidden md:flex space-x-8">
+            <a
+              href="#about"
+              class="nav-link text-sm font-medium text-gray-600 hover:text-brand transition"
+              >About</a
+            >
+            <a
+              href="#experience"
+              class="nav-link text-sm font-medium text-gray-600 hover:text-brand transition"
+              >Experience</a
+            >
+            <a
+              href="#skills"
+              class="nav-link text-sm font-medium text-gray-600 hover:text-brand transition"
+              >Skills</a
+            >
+            <a
+              href="#portfolio"
+              class="nav-link text-sm font-medium text-gray-600 hover:text-brand transition"
+              >Portfolio</a
+            >
+          </div>
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-btn"
+              class="text-gray-600 hover:text-gray-900 focus:outline-none"
+            >
+              <i class="bx bx-menu text-2xl" id="menu-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-4 shadow-lg absolute w-full"
+      >
+        <a
+          href="#about"
+          class="block text-sm font-medium text-gray-600 hover:text-brand"
+          >About</a
+        >
+        <a
+          href="#experience"
+          class="block text-sm font-medium text-gray-600 hover:text-brand"
+          >Experience</a
+        >
+        <a
+          href="#skills"
+          class="block text-sm font-medium text-gray-600 hover:text-brand"
+          >Skills</a
+        >
+        <a
+          href="#portfolio"
+          class="block text-sm font-medium text-gray-600 hover:text-brand"
+          >Portfolio</a
+        >
+      </div>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <section
+      id="home"
+      class="relative min-h-screen flex items-center justify-center pt-20 pb-12 bg-white overflow-hidden"
+    >
+      <!-- Blobs -->
+      <div
+        class="blob w-96 h-96 bg-blue-400 top-10 -left-24"
+        style="animation-delay: 0s"
+      ></div>
+      <div
+        class="blob w-80 h-80 bg-cyan-300 bottom-10 right-0"
+        style="animation-delay: 3s"
+      ></div>
+
+      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <p
+          class="hero-tag text-brand font-semibold tracking-wide uppercase mb-4 text-sm bg-blue-50 inline-block px-4 py-1.5 rounded-full"
+        >
+          Welcome!
+        </p>
+        <h1
+          class="hero-h1 text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6"
+        >
+          I'm <span class="shimmer-text">Frankie</span>
+        </h1>
+        <p
+          class="hero-sub text-xl text-gray-500 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
+        >
+          <span id="typed-text"></span><span class="typed-cursor"></span>
+        </p>
+        <div class="hero-btns flex flex-wrap justify-center gap-4 mb-10">
+          <a
+            href="#portfolio"
+            class="px-8 py-3 bg-brand text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
+            >See my work</a
+          >
+          <a
+            href="#about"
+            class="px-8 py-3 bg-gray-100 text-gray-700 font-medium rounded-full hover:bg-gray-200 transition"
+            >About me</a
+          >
+        </div>
+        <div class="hero-social flex justify-center gap-5">
+          <a
+            href="https://github.com/frankie09"
+            target="_blank"
+            class="p-3 text-gray-500 hover:text-gray-900 transition hover:-translate-y-1"
+            ><i class="bx bxl-github text-2xl"></i
+          ></a>
+          <a
+            href="https://instagram.com/frank_iie"
+            target="_blank"
+            class="p-3 text-gray-500 hover:text-pink-600 transition hover:-translate-y-1"
+            ><i class="bx bxl-instagram text-2xl"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/frankie-204361250/"
+            target="_blank"
+            class="p-3 text-gray-500 hover:text-blue-700 transition hover:-translate-y-1"
+            ><i class="bx bxl-linkedin text-2xl"></i
+          ></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ABOUT ==================== -->
+    <section id="about" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div class="reveal">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">About Me</h2>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              I am a Backend &amp; Fullstack Developer with experience in
+              building scalable systems and enterprise applications.
+            </p>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+              I have hands-on experience developing microservices and REST APIs
+              using technologies such as Spring Boot and modern web frameworks.
+              I am passionate about software engineering, system design, and
+              building efficient, reliable, and scalable applications.
+            </p>
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm bg-white p-6 rounded-2xl border border-gray-100 shadow-sm"
+            >
+              <div>
+                <span class="font-bold text-gray-900 block mb-1">Name</span
+                >Frankie
+              </div>
+              <div>
+                <span class="font-bold text-gray-900 block mb-1">Location</span
+                >Surakarta, Indonesia
+              </div>
+              <div>
+                <span class="font-bold text-gray-900 block mb-1">Major</span
+                >Informatics Engineering
+              </div>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-2">
+            <div
+              class="aspect-square rounded-2xl overflow-hidden bg-gray-200 shadow-inner relative"
+            >
+              <img
+                src="./assets/img/1741080136349.jpg"
+                alt="Frankie"
+                class="w-full h-full object-cover"
+                onerror="this.style.display = 'none'"
+              />
+              <div
+                class="absolute inset-0 flex items-center justify-center -z-10"
+              >
+                <i class="bx bx-user text-6xl text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div class="mt-10">
+          <h3 class="text-xl font-bold text-center text-gray-900 mb-8 reveal">
+            What can I do?
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              class="service-card reveal reveal-delay-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+            >
+              <div
+                class="w-12 h-12 bg-blue-50 text-brand rounded-xl flex items-center justify-center mb-4"
+              >
+                <i class="bx bx-desktop text-2xl"></i>
+              </div>
+              <h4 class="font-bold text-gray-900 mb-2">Web Development</h4>
+              <p class="text-sm text-gray-500 leading-relaxed">
+                Building responsive, efficient, and robust full-stack
+                applications.
+              </p>
+            </div>
+            <div
+              class="service-card reveal reveal-delay-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+            >
+              <div
+                class="w-12 h-12 bg-blue-50 text-brand rounded-xl flex items-center justify-center mb-4"
+              >
+                <i class="bx bx-server text-2xl"></i>
+              </div>
+              <h4 class="font-bold text-gray-900 mb-2">Backend Development</h4>
+              <p class="text-sm text-gray-500 leading-relaxed">
+                Designing and building scalable backend systems, RESTful APIs,
+                and microservices with a focus on performance, security, and
+                maintainability.
+              </p>
+            </div>
+            <div
+              class="service-card reveal reveal-delay-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+            >
+              <div
+                class="w-12 h-12 bg-blue-50 text-brand rounded-xl flex items-center justify-center mb-4"
+              >
+                <i class="bx bx-git-branch text-2xl"></i>
+              </div>
+              <h4 class="font-bold text-gray-900 mb-2">CI/CD &amp; DevOps</h4>
+              <p class="text-sm text-gray-500 leading-relaxed">
+                Implementing CI/CD pipelines using Git, Jenkins, and OpenShift.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== EXPERIENCE ==================== -->
+    <section id="experience" class="py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Experience -->
+        <div class="reveal mb-14">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8">Experience</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Farmer -->
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+              <div class="flex gap-4 items-start mb-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="bx bx-leaf text-2xl text-green-500"></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs font-bold text-brand tracking-wider uppercase"
+                    >2025 – Present</span
+                  >
+                  <h3 class="text-base font-bold text-gray-900 mt-0.5">
+                    Farmer
+                  </h3>
+                  <p class="text-sm font-medium text-gray-700">Switzerland</p>
+                </div>
+              </div>
+              <!-- Photos -->
+              <div class="flex gap-2 flex-wrap">
+                <img
+                  src="./assets/img/farmer-1.jpg"
+                  alt=""
+                  class="h-20 w-28 object-cover rounded-lg border border-gray-200"
+                  onerror="this.style.display = 'none'"
+                />
+                <img
+                  src="./assets/img/farmer-2.jpg"
+                  alt=""
+                  class="h-20 w-28 object-cover rounded-lg border border-gray-200"
+                  onerror="this.style.display = 'none'"
+                />
+              </div>
+            </div>
+            <!-- BCA -->
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+              <div class="flex gap-4 items-start mb-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
+                >
+                  <img
+                    src="./assets/img/logo/bca.png"
+                    alt="BCA"
+                    class="w-10 h-10 object-contain"
+                    onerror="
+                      this.style.display = 'none';
+                      this.nextElementSibling.style.display = 'block';
+                    "
+                  />
+                  <i
+                    class="bx bx-buildings text-2xl text-blue-500"
+                    style="display: none"
+                  ></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs font-bold text-brand tracking-wider uppercase"
+                    >Sep 2023 – Feb 2025</span
+                  >
+                  <h3 class="text-base font-bold text-gray-900 mt-0.5">
+                    IT Specialist – Microservices / Backend Engineer
+                  </h3>
+                  <p class="text-sm font-medium text-gray-700">
+                    PT Bank Central Asia Tbk.
+                  </p>
+                </div>
+              </div>
+              <ul class="text-sm text-gray-500 space-y-1 list-disc pl-4 mb-5">
+                <li>
+                  Developed REST APIs using Spring Boot &amp; Spring Batch
+                </li>
+                <li>
+                  Built scalable microservices for internal and public systems
+                </li>
+                <li>Contributed to frontend development using Angular</li>
+                <li>Handled batch processing and data integration workflows</li>
+                <li>Worked with CI/CD pipelines using Jenkins</li>
+              </ul>
+              <!-- Photos
+              <div class="flex gap-2 flex-wrap">
+                <a
+                  href="./assets/img/documentation/bca-1.jpg"
+                  data-fancybox="bca"
+                  class="cursor-zoom-in"
+                >
+                  <img
+                    src="./assets/img/documentation/bca-1.jpg"
+                    alt=""
+                    class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
+                    onerror="this.parentElement.style.display = 'none'"
+                  />
+                </a>
+                <a
+                  href="./assets/img/documentation/bca-2.jpg"
+                  data-fancybox="bca"
+                  class="cursor-zoom-in"
+                >
+                  <img
+                    src="./assets/img/documentation/bca-2.jpg"
+                    alt=""
+                    class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
+                    onerror="this.parentElement.style.display = 'none'"
+                  />
+                </a>
+                <a
+                  href="./assets/img/documentation/bca-3.jpg"
+                  data-fancybox="bca"
+                  class="cursor-zoom-in"
+                >
+                  <img
+                    src="./assets/img/documentation/bca-3.jpg"
+                    alt=""
+                    class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
+                    onerror="this.parentElement.style.display = 'none'"
+                  />
+                </a>
+                <a
+                  href="./assets/img/bca-4.jpg"
+                  data-fancybox="bca"
+                  class="cursor-zoom-in"
+                >
+                  <img
+                    src="./assets/img/bca-4.jpg"
+                    alt=""
+                    class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
+                    onerror="this.parentElement.style.display = 'none'"
+                  />
+                </a>
+              </div> -->
+            </div>
+
+            <!-- Alfamart -->
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+              <div class="flex gap-4 items-start mb-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
+                >
+                  <img
+                    src="./assets/img/logo/alfamart.png"
+                    alt="Alfamart"
+                    class="w-10 h-10 object-contain"
+                    onerror="
+                      this.style.display = 'none';
+                      this.nextElementSibling.style.display = 'block';
+                    "
+                  />
+                  <i
+                    class="bx bx-store text-2xl text-red-400"
+                    style="display: none"
+                  ></i>
+                </div>
+                <div>
+                  <span
+                    class="text-xs font-bold text-brand tracking-wider uppercase"
+                    >Sep 2022 – Aug 2023</span
+                  >
+                  <h3 class="text-base font-bold text-gray-900 mt-0.5">
+                    Intern – IT Business Integration Programmer
+                  </h3>
+                  <p class="text-sm font-medium text-gray-700">
+                    PT Sumber Alfaria Trijaya Tbk (Alfamart)
+                  </p>
+                </div>
+              </div>
+              <ul class="text-sm text-gray-500 space-y-1 list-disc pl-4 mb-5">
+                <li>
+                  Developed internal applications using company's proprietary
+                  compiler
+                </li>
+                <li>
+                  Built and optimized data input workflows for internal business
+                  processes
+                </li>
+                <li>
+                  Conducted research on MongoDB text indexing for thesis
+                  implementation
+                </li>
+              </ul>
+              <!-- Photos
+              <div class="flex gap-2 flex-wrap">
+                <img
+                  src="./assets/img/alfamart-1.jpg"
+                  alt=""
+                  class="h-20 w-28 object-cover rounded-lg border border-gray-200"
+                  onerror="this.style.display = 'none'"
+                />
+                <img
+                  src="./assets/img/alfamart-2.jpg"
+                  alt=""
+                  class="h-20 w-28 object-cover rounded-lg border border-gray-200"
+                  onerror="this.style.display = 'none'"
+                />
+              </div> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="reveal reveal-delay-2">
+          <h2 class="text-3xl font-bold text-gray-900 mb-8">Education</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- UKSW -->
+            <div
+              class="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex gap-4 items-start"
+            >
+              <div
+                class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
+              >
+                <img
+                  src="./assets/img/logo-uksw.png"
+                  alt="UKSW"
+                  class="w-10 h-10 object-contain"
+                  onerror="
+                    this.style.display = 'none';
+                    this.nextElementSibling.style.display = 'block';
+                  "
+                />
+                <i
+                  class="bx bx-buildings text-2xl text-indigo-400"
+                  style="display: none"
+                ></i>
+              </div>
+              <div>
+                <span
+                  class="text-xs font-bold text-brand tracking-wider uppercase"
+                  >2019 – 2023</span
+                >
+                <h3 class="text-base font-bold text-gray-900 mt-0.5">
+                  Informatics Engineering
+                </h3>
+                <p class="text-sm font-medium text-gray-700">
+                  Satya Wacana Christian University
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                  Software Engineering focus ·
+                  <span class="font-bold text-gray-800">GPA: 3.94</span>
+                </p>
+              </div>
+            </div>
+
+            <!-- SMA -->
+            <div
+              class="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex gap-4 items-start"
+            >
+              <div
+                class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0"
+              >
+                <i class="bx bx-book text-2xl text-yellow-500"></i>
+              </div>
+              <div>
+                <span
+                  class="text-xs font-bold text-gray-400 tracking-wider uppercase"
+                  >2016</span
+                >
+                <h3 class="text-base font-bold text-gray-900 mt-0.5">
+                  Natural Science
+                </h3>
+                <p class="text-sm text-gray-500">
+                  Widya Wacana Senior Highschool
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SKILLS ==================== -->
+    <section id="skills" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center reveal">
+          Tech Stack &amp; Skills
+        </h2>
+        <div class="max-w-3xl mx-auto text-center reveal">
+          <h3 class="text-lg font-bold text-gray-900 mb-6">
+            Programming Languages &amp; Tools
+          </h3>
+          <div class="flex flex-wrap justify-center gap-3">
+            <!-- Languages -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Java</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >JavaScript</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >PHP</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Python</span
+            >
+            <!-- Frontend -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >React</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Angular</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Tailwind CSS</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Bootstrap</span
+            >
+            <!-- Backend -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Spring Boot</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Spring Batch</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Laravel</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Flask</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >GraphQL</span
+            >
+            <!-- Arch -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Microservices</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >REST API</span
+            >
+            <!-- DB -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >MySQL</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >PostgreSQL</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >MongoDB</span
+            >
+            <!-- DevOps -->
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Jenkins</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Git</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Linux</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Firebase</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >Google Cloud Platform</span
+            >
+            <span
+              class="skill-tag px-4 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 shadow-sm"
+              >OpenShift Container Platform</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PORTFOLIO ==================== -->
+    <section id="portfolio" class="py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 reveal">
+          <h2 class="text-3xl font-bold text-gray-900">Projects I've built.</h2>
+        </div>
+
+        <!-- Filter -->
+        <div
+          class="flex flex-wrap justify-center gap-2 mb-10 reveal"
+          id="filter-row"
+        >
+          <button
+            data-filter="all"
+            class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-900 text-white"
+          >
+            All
+          </button>
+          <button
+            data-filter="web"
+            class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+          >
+            Web
+          </button>
+          <button
+            data-filter="mobile"
+            class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+          >
+            Mobile
+          </button>
+          <button
+            data-filter="acdc"
+            class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+          >
+            Academic Projects
+          </button>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          id="portfolio-grid"
+        >
+          <!-- SalesTrack -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-1"
+            data-cat="web"
+          >
+            <a
+              href="./assets/img/salestrack.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>SalesTrack</h5><p>Sistem Pencatatan Penjualan (2026)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/salestrack.png"
+                alt="SalesTrack"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-receipt text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+              >
+                React · Node.js
+              </span>
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                SalesTrack
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Sistem pencatatan penjualan harian untuk tim distributor
+                lapangan, dengan fitur approval revisi & export Excel. (2025)
+              </p>
+            </div>
+          </div>
+          <!-- Sukhafa Operational Dashboard -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-2"
+            data-cat="web"
+          >
+            <a
+              href="./assets/img/sukhafa.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>Sukhafa App</h5><p>Distributor Ops Platform (2026)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/sukhafa.png"
+                alt="Sukhafa App"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-store text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+              >
+                React · Node.js
+              </span>
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                Sukhafa App
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Integrated distributor operations platform for multi-retail
+                stock, sales, and waybill monitoring. (2025)
+              </p>
+            </div>
+          </div>
+          <!-- HaloBCA -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal"
+            data-cat="mobile"
+          >
+            <a
+              href="./assets/img/haloapps.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>HaloBCA Biometric Login</h5><p>HaloBCA Biometric Login (2023)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/haloapps.png"
+                alt="HaloBCA"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-mobile text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+                >Java · Spring Boot · Mobile API</span
+              >
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                HaloBCA Biometric Login
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Developed biometric authentication system for public mobile
+                users - 2023
+              </p>
+            </div>
+          </div>
+
+          <!-- NFT -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-1"
+            data-cat="mobile acdc"
+          >
+            <a
+              href="./assets/img/nft.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>Mobile NFT App</h5><p>NFT (2021)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/nft.png"
+                alt="NFT"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-mobile-alt text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+                >Java · Android</span
+              >
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                Mobile NFT App
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Native Android NFT marketplace application. (2021)
+              </p>
+            </div>
+          </div>
+
+          <!-- BookStore -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-2"
+            data-cat="acdc web"
+          >
+            <a
+              href="./assets/img/rediframedia.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>BookStore Web</h5><p>BookStore (2021)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/rediframedia.png"
+                alt="BookStore"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-book-open text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+                >PHP · Web</span
+              >
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                BookStore Web
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Bookstore site with PHP, HTML, CSS, Bootstrap. (2021)
+              </p>
+            </div>
+          </div>
+
+          <!-- Tourism -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal"
+            data-cat="acdc web"
+          >
+            <a
+              href="./assets/img/wisata.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>Tourism Web</h5><p>Web (2020)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/wisata.png"
+                alt="Tourism"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-map text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+                >Bootstrap · Web</span
+              >
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                Tourism Web
+              </h3>
+              <p class="text-gray-500 text-sm">Tourism Website (2020)</p>
+            </div>
+          </div>
+
+          <!-- MongoDB -->
+          <div
+            class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-1"
+            data-cat="acdc web"
+          >
+            <a
+              href="./assets/img/mongodb.png"
+              data-fancybox="gallery"
+              data-caption="<h5 class='text-lg font-bold text-white'>MongoDB Research</h5><p>Web (2022)</p>"
+              class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
+            >
+              <img
+                src="./assets/img/mongodb.png"
+                alt="MongoDB"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                onerror="this.style.display = 'none'"
+              />
+              <i
+                class="bx bx-data text-gray-400/50 text-5xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-20"
+              ></i>
+            </a>
+            <div class="p-6">
+              <span
+                class="text-xs font-bold text-brand uppercase tracking-wider"
+                >Flask · DB</span
+              >
+              <h3 class="text-lg font-bold text-gray-900 mt-1 mb-2">
+                MongoDB Research
+              </h3>
+              <p class="text-gray-500 text-sm">
+                Database research &amp; implementation with Flask. (2022)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== NOTABLE ==================== -->
+    <section id="notable" class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 reveal">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Notable Internal Projects
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="notable-card reveal reveal-delay-1 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <div
+              class="flex items-center justify-center h-16 w-16 rounded-lg bg-gray-100 mb-4"
+            >
+              <i class="bx bx-wallet text-2xl text-gray-600"></i>
+            </div>
+            <span class="text-xs font-bold text-brand uppercase tracking-wider"
+              >Banking · System</span
+            >
+            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2">
+              Deposit Management System
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Developed system to manage customer deposit products, including
+              tracking, validation, and lifecycle handling.
+            </p>
+          </div>
+
+          <div
+            class="notable-card reveal reveal-delay-2 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <div
+              class="flex items-center justify-center h-16 w-16 rounded-lg bg-gray-100 mb-4"
+            >
+              <i class="bx bx-check-shield text-2xl text-gray-600"></i>
+            </div>
+            <span class="text-xs font-bold text-brand uppercase tracking-wider"
+              >Workflow · Approval</span
+            >
+            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2">
+              Credit Card Approval System
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Built approval workflow system to process and validate credit card
+              applications across multiple stages.
+            </p>
+          </div>
+
+          <div
+            class="notable-card reveal reveal-delay-3 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <div
+              class="flex items-center justify-center h-16 w-16 rounded-lg bg-gray-100 mb-4"
+            >
+              <i class="bx bx-credit-card text-2xl text-gray-600"></i>
+            </div>
+            <span class="text-xs font-bold text-brand uppercase tracking-wider"
+              >Application · System</span
+            >
+            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2">
+              Credit Card Application System
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Designed system for submitting and managing credit card requests,
+              including validation and data processing.
+            </p>
+          </div>
+
+          <div
+            class="notable-card reveal bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <div
+              class="flex items-center justify-center h-16 w-16 rounded-lg bg-gray-100 mb-4"
+            >
+              <i class="bx bx-store text-2xl text-gray-600"></i>
+            </div>
+            <span class="text-xs font-bold text-brand uppercase tracking-wider"
+              >Internal · POS</span
+            >
+            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2">
+              Employee Canteen System
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Developed internal system used by employees for canteen
+              transactions and daily operational management.
+            </p>
+          </div>
+
+          <div
+            class="notable-card reveal reveal-delay-1 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <div
+              class="flex items-center justify-center h-16 w-16 rounded-lg bg-gray-100 mb-4"
+            >
+              <i class="bx bx-user text-2xl text-gray-600"></i>
+            </div>
+            <span class="text-xs font-bold text-brand uppercase tracking-wider"
+              >Data · CRM</span
+            >
+            <h3 class="text-lg font-bold text-gray-900 mt-2 mb-2">
+              Customer Information System
+            </h3>
+            <p class="text-gray-500 text-sm">
+              Built centralized system for managing and accessing structured
+              customer data across services.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-white border-t border-gray-200 py-10">
+      <div
+        class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6"
+      >
+        <div class="text-center md:text-left">
+          <h2 class="text-xl font-bold text-gray-900 tracking-tighter">
+            Frankie<span class="text-brand">.</span>
+          </h2>
+          <p class="text-sm text-gray-500 mt-1">
+            Surakarta, Central Java. Indonesia
+          </p>
+        </div>
+        <div class="flex justify-center gap-5">
+          <a
+            href="https://github.com/frankie09"
+            target="_blank"
+            class="text-gray-400 hover:text-gray-900 hover:-translate-y-1 transition"
+            ><i class="bx bxl-github text-2xl"></i
+          ></a>
+          <a
+            href="https://instagram.com/frank_iie"
+            target="_blank"
+            class="text-gray-400 hover:text-pink-600 hover:-translate-y-1 transition"
+            ><i class="bx bxl-instagram text-2xl"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/frankie-204361250/"
+            target="_blank"
+            class="text-gray-400 hover:text-brand hover:-translate-y-1 transition"
+            ><i class="bx bxl-linkedin text-2xl"></i
+          ></a>
+        </div>
+        <div class="text-sm text-gray-500 text-center md:text-right">
+          &copy; <span id="year"></span> Frankie.
+        </div>
+      </div>
+    </footer>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+      // Year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // ── Preloader ──
+      window.addEventListener("load", () => {
+        const pre = document.getElementById("preloader");
+        setTimeout(() => {
+          pre.style.opacity = "0";
+          setTimeout(() => {
+            pre.style.display = "none";
+            startCountUp();
+          }, 600);
+        }, 1200);
+      });
+
+      // ── Fancybox ──
+      Fancybox.bind("[data-fancybox]", { animated: true, dragToClose: false });
+
+      // ── Back to top ──
+      const btt = document.getElementById("btn-back-to-top");
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          btt.classList.remove("opacity-0", "pointer-events-none");
+          btt.classList.add("opacity-100", "pointer-events-auto");
+        } else {
+          btt.classList.add("opacity-0", "pointer-events-none");
+          btt.classList.remove("opacity-100", "pointer-events-auto");
+        }
+      });
+      btt.addEventListener("click", () =>
+        window.scrollTo({ top: 0, behavior: "smooth" }),
+      );
+
+      // ── Navbar shadow ──
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("shadow-sm", window.scrollY > 20);
+      });
+
+      // ── Mobile menu ──
+      const menuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const menuIcon = document.getElementById("menu-icon");
+      let isOpen = false;
+      menuBtn.addEventListener("click", () => {
+        isOpen = !isOpen;
+        mobileMenu.classList.toggle("hidden", !isOpen);
+        menuIcon.classList.replace(
+          isOpen ? "bx-menu" : "bx-x",
+          isOpen ? "bx-x" : "bx-menu",
+        );
+      });
+      mobileMenu.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          isOpen = false;
+          mobileMenu.classList.add("hidden");
+          menuIcon.classList.replace("bx-x", "bx-menu");
+        }),
+      );
+
+      // ── Typing effect ──
+      const phrases = [
+        "Backend & Fullstack Developer",
+        "REST API Specialist",
+        "Microservices Specialist",
+      ];
+      let pi = 0,
+        ci = 0,
+        deleting = false;
+      const el = document.getElementById("typed-text");
+      function typeLoop() {
+        const cur = phrases[pi];
+        if (!deleting) {
+          el.textContent = cur.slice(0, ++ci);
+          if (ci === cur.length) {
+            deleting = true;
+            return setTimeout(typeLoop, 1800);
+          }
+        } else {
+          el.textContent = cur.slice(0, --ci);
+          if (ci === 0) {
+            deleting = false;
+            pi = (pi + 1) % phrases.length;
+          }
+        }
+        setTimeout(typeLoop, deleting ? 10 : 20);
+      }
+      setTimeout(typeLoop, 1400);
+
+      // ── Cursor glow ──
+      const glow = document.getElementById("cursor-glow");
+      document.addEventListener("mousemove", (e) => {
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+      });
+
+      // ── Count up ──
+      function startCountUp() {
+        document.querySelectorAll(".stat-number").forEach((el) => {
+          const target = +el.dataset.target;
+          let cur = 0;
+          const step = Math.ceil(target / 40);
+          const t = setInterval(() => {
+            cur = Math.min(cur + step, target);
+            el.textContent = cur + (target >= 10 ? "+" : "+");
+            if (cur >= target) clearInterval(t);
+          }, 40);
+        });
+      }
+
+      // ── Scroll reveal ──
+      const revealObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              revealObs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObs.observe(el));
+
+      // ── Portfolio filter ──
+      const filterBtns = document.querySelectorAll(".filter-btn");
+      const cards = document.querySelectorAll(".port-card");
+
+      filterBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterBtns.forEach((b) => {
+            b.classList.remove("bg-gray-900", "text-white");
+            b.classList.add(
+              "bg-gray-100",
+              "text-gray-600",
+              "hover:bg-gray-200",
+            );
+          });
+          btn.classList.add("bg-gray-900", "text-white");
+          btn.classList.remove(
+            "bg-gray-100",
+            "text-gray-600",
+            "hover:bg-gray-200",
+          );
+
+          const f = btn.dataset.filter;
+          cards.forEach((card) => {
+            const show = f === "all" || card.dataset.cat.includes(f);
+            card.style.display = show ? "block" : "none";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
