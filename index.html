@@ -30,6 +30,15 @@
         },
       };
     </script>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("portfolio-theme");
+        document.documentElement.dataset.theme =
+          savedTheme === "light" ? "light" : "dark";
+      } catch {
+        document.documentElement.dataset.theme = "dark";
+      }
+    </script>
 
     <style>
       /* ===== SCROLLBAR ===== */
@@ -314,12 +323,312 @@
       #btn-back-to-top:hover {
         transform: translateY(-4px);
       }
+
+      /* Dark theme keeps the portfolio's existing blue accent and contrast. */
+      html[data-theme="dark"] {
+        color-scheme: dark;
+      }
+      html[data-theme="dark"] body {
+        background-color: #111318 !important;
+        color: #f3f4f6 !important;
+      }
+      html[data-theme="dark"] .bg-white,
+      html[data-theme="dark"] .bg-white\/80 {
+        background-color: #181b22 !important;
+      }
+      html[data-theme="dark"] .bg-gray-50 {
+        background-color: #111318 !important;
+      }
+      html[data-theme="dark"] .bg-gray-100 {
+        background-color: #232730 !important;
+      }
+      html[data-theme="dark"] .hover\:bg-gray-200:hover {
+        background-color: #303640 !important;
+      }
+      html[data-theme="dark"] .bg-blue-50 {
+        background-color: #17243a !important;
+      }
+      html[data-theme="dark"] .text-gray-900,
+      html[data-theme="dark"] .text-gray-800 {
+        color: #f3f4f6 !important;
+      }
+      html[data-theme="dark"] .text-gray-700,
+      html[data-theme="dark"] .text-gray-600,
+      html[data-theme="dark"] .text-gray-500,
+      html[data-theme="dark"] .text-gray-400 {
+        color: #b7bec9 !important;
+      }
+      html[data-theme="dark"] .text-brand {
+        color: #60a5fa !important;
+      }
+      html[data-theme="dark"] .border-gray-100,
+      html[data-theme="dark"] .border-gray-200 {
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] #navbar {
+        background-color: rgba(17, 19, 24, 0.92) !important;
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] #mobile-menu {
+        background-color: #181b22 !important;
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] #home {
+        background-color: #111318 !important;
+      }
+      html[data-theme="dark"] #preloader {
+        background-color: #111318;
+      }
+      html[data-theme="dark"] .skill-tag {
+        background-color: #181b22 !important;
+        color: #e5e7eb !important;
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] .port-card {
+        background-color: #181b22 !important;
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] footer {
+        background-color: #0d0f13 !important;
+        border-color: #303640 !important;
+      }
+      html[data-theme="dark"] ::selection {
+        background: #2563eb;
+        color: white;
+      }
+      #theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.65rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        background: transparent;
+        color: #374151;
+        font: inherit;
+        font-size: 0.875rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      #theme-toggle:hover {
+        background: rgba(107, 114, 128, 0.1);
+      }
+      #theme-toggle:focus-visible {
+        outline: 3px solid #2563eb;
+        outline-offset: 3px;
+      }
+      #theme-toggle i {
+        font-size: 1.1rem;
+      }
+      html[data-theme="dark"] #theme-toggle {
+        color: #f3f4f6;
+        border-color: #4b5563;
+      }
+      html.theme-transition body,
+      html.theme-transition #navbar,
+      html.theme-transition #mobile-menu,
+      html.theme-transition footer,
+      html.theme-transition .bg-white,
+      html.theme-transition .bg-gray-50,
+      html.theme-transition .bg-gray-100,
+      html.theme-transition .text-gray-900,
+      html.theme-transition .text-gray-800,
+      html.theme-transition .text-gray-700,
+      html.theme-transition .text-gray-600,
+      html.theme-transition .text-gray-500,
+      html.theme-transition .border-gray-100,
+      html.theme-transition .border-gray-200,
+      html.theme-transition .skill-tag,
+      html.theme-transition .port-card {
+        transition:
+          color 0.24s ease,
+          background-color 0.24s ease,
+          border-color 0.24s ease;
+      }
+      #scroll-progress {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 60;
+        height: 3px;
+        background: transparent;
+        pointer-events: none;
+      }
+      #scroll-progress span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #2563eb;
+        transform: scaleX(0);
+        transform-origin: left center;
+        will-change: transform;
+      }
+      .experience-timeline {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 1.5rem;
+        max-width: 850px;
+        padding-left: 28px;
+      }
+      .experience-timeline::before,
+      .experience-timeline::after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 0;
+        width: 2px;
+        border-radius: 2px;
+      }
+      .experience-timeline::before {
+        height: 100%;
+        background: #dbe2ea;
+      }
+      .experience-timeline::after {
+        height: var(--timeline-progress, 0%);
+        background: #2563eb;
+        transition: height 0.12s linear;
+      }
+      .experience-entry {
+        position: relative;
+      }
+      .experience-entry::before {
+        content: "";
+        position: absolute;
+        left: -25px;
+        top: 28px;
+        z-index: 1;
+        width: 10px;
+        height: 10px;
+        border: 2px solid #2563eb;
+        border-radius: 50%;
+        background: white;
+      }
+      html[data-theme="dark"] .experience-timeline::before {
+        background: #3a414d;
+      }
+      html[data-theme="dark"] .experience-entry::before {
+        background: #181b22;
+      }
+      .port-card {
+        transition:
+          transform 0.24s ease,
+          box-shadow 0.24s ease;
+      }
+      .port-card > a {
+        isolation: isolate;
+      }
+      .port-card img {
+        transition: transform 0.35s ease;
+      }
+      .project-title-overlay {
+        position: absolute;
+        inset: auto 0 0;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        min-height: 58%;
+        padding: 1.1rem;
+        color: white;
+        font-size: 1.05rem;
+        font-weight: 700;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.22s ease,
+          transform 0.22s ease;
+        pointer-events: none;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .port-card:hover {
+          transform: translateY(calc(var(--reveal-offset, 14px) - 3px))
+            scale(1.02);
+        }
+        .port-card:hover img {
+          transform: scale(1.04);
+        }
+        .port-card:hover .project-title-overlay {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .port-card:focus-within .project-title-overlay {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .filter-enter > a,
+      .filter-enter > div {
+        animation: filterEnter 0.24s ease both;
+      }
+      @keyframes filterEnter {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .reveal {
+        transform: translateY(var(--reveal-offset, 14px));
+        transition: none;
+      }
+      .notable-card:hover {
+        transform: translateY(calc(var(--reveal-offset, 14px) - 3px));
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.06s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.12s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.18s;
+      }
+      .reveal-delay-4 {
+        transition-delay: 0.24s;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.theme-transition * {
+          transition: none !important;
+        }
+        #scroll-progress span,
+        .experience-timeline::after {
+          transition: none;
+        }
+        .filter-enter > a,
+        .filter-enter > div {
+          animation: none;
+        }
+        .port-card,
+        .port-card img,
+        .project-title-overlay {
+          transition: none;
+        }
+        .reveal {
+          transform: none;
+          transition: none;
+        }
+      }
     </style>
+    <link rel="stylesheet" href="./console.css" />
   </head>
 
   <body
     class="bg-gray-50 text-gray-800 antialiased font-sans selection:bg-brand selection:text-white overflow-x-hidden"
   >
+    <div
+      id="scroll-progress"
+      role="progressbar"
+      aria-label="Page scroll progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+    >
+      <span></span>
+    </div>
     <!-- Cursor Glow -->
     <div class="cursor-glow" id="cursor-glow"></div>
 
@@ -375,6 +684,15 @@
               >Portfolio</a
             >
           </div>
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="Switch to dark theme"
+            aria-pressed="false"
+          >
+            <i class="bx bx-moon" id="theme-icon" aria-hidden="true"></i>
+            <span id="theme-label">Dark theme</span>
+          </button>
           <div class="md:hidden">
             <button
               id="mobile-menu-btn"
@@ -413,77 +731,110 @@
     </nav>
 
     <!-- ==================== HERO ==================== -->
-    <section
-      id="home"
-      class="relative min-h-screen flex items-center justify-center pt-20 pb-12 bg-white overflow-hidden"
-    >
-      <!-- Blobs -->
-      <div
-        class="blob w-96 h-96 bg-blue-400 top-10 -left-24"
-        style="animation-delay: 0s"
-      ></div>
-      <div
-        class="blob w-80 h-80 bg-cyan-300 bottom-10 right-0"
-        style="animation-delay: 3s"
-      ></div>
-
-      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <p
-          class="hero-tag text-brand font-semibold tracking-wide uppercase mb-4 text-sm bg-blue-50 inline-block px-4 py-1.5 rounded-full"
+    <section id="home" class="console-home">
+      <div class="console-home-art" aria-hidden="true"></div>
+      <div class="console-home-content">
+        <div class="console-feature reveal reveal-delay-1">
+          <p class="console-kicker">WELCOME</p>
+          <h1>
+            I'm <span class="console-name shimmer-text">Frankie</span
+            ><span class="console-name-dot">.</span>
+          </h1>
+          <p class="console-role">
+            <span id="typed-text">Backend &amp; Fullstack Developer</span
+            ><span class="typed-cursor" aria-hidden="true"></span>
+          </p>
+          <p class="console-intro">
+            I build backend services, APIs, and full-stack applications with a
+            focus on reliable systems.
+          </p>
+          <div class="console-actions">
+            <a class="console-primary" href="#portfolio"
+              ><i class="bx bx-play" aria-hidden="true"></i> Explore projects</a
+            >
+            <a class="console-secondary" href="#about">About me</a>
+          </div>
+        </div>
+        <div
+          class="console-shortcuts reveal reveal-delay-2"
+          aria-label="Portfolio sections"
         >
-          Welcome!
-        </p>
-        <h1
-          class="hero-h1 text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6"
-        >
-          I'm <span class="shimmer-text">Frankie</span>
-        </h1>
-        <p
-          class="hero-sub text-xl text-gray-500 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
-        >
-          <span id="typed-text"></span><span class="typed-cursor"></span>
-        </p>
-        <div class="hero-btns flex flex-wrap justify-center gap-4 mb-10">
-          <a
-            href="#portfolio"
-            class="px-8 py-3 bg-brand text-white font-medium rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
-            >See my work</a
+          <a href="#portfolio"
+            ><span class="shortcut-mark"
+              ><i class="bx bx-grid-alt" aria-hidden="true"></i></span
+            ><span>Projects</span></a
           >
-          <a
-            href="#about"
-            class="px-8 py-3 bg-gray-100 text-gray-700 font-medium rounded-full hover:bg-gray-200 transition"
-            >About me</a
+          <a href="#experience"
+            ><span class="shortcut-mark"
+              ><i class="bx bx-briefcase" aria-hidden="true"></i></span
+            ><span>Experience</span></a
+          >
+          <a href="#skills"
+            ><span class="shortcut-mark"
+              ><i class="bx bx-code-alt" aria-hidden="true"></i></span
+            ><span>Tech stack</span></a
+          >
+          <a href="#about"
+            ><span class="shortcut-mark"
+              ><i class="bx bx-user" aria-hidden="true"></i></span
+            ><span>About Frankie</span></a
           >
         </div>
-        <div class="hero-social flex justify-center gap-5">
+        <div class="console-social reveal reveal-delay-3">
           <a
             href="https://github.com/frankie09"
             target="_blank"
-            class="p-3 text-gray-500 hover:text-gray-900 transition hover:-translate-y-1"
-            ><i class="bx bxl-github text-2xl"></i
-          ></a>
-          <a
-            href="https://instagram.com/frank_iie"
-            target="_blank"
-            class="p-3 text-gray-500 hover:text-pink-600 transition hover:-translate-y-1"
-            ><i class="bx bxl-instagram text-2xl"></i
-          ></a>
+            rel="noreferrer"
+            ><i class="bx bxl-github" aria-hidden="true"></i> GitHub</a
+          >
           <a
             href="https://www.linkedin.com/in/frankie-204361250/"
             target="_blank"
-            class="p-3 text-gray-500 hover:text-blue-700 transition hover:-translate-y-1"
-            ><i class="bx bxl-linkedin text-2xl"></i
-          ></a>
+            rel="noreferrer"
+            ><i class="bx bxl-linkedin" aria-hidden="true"></i> LinkedIn</a
+          >
+          <a
+            href="https://instagram.com/frank_iie"
+            target="_blank"
+            rel="noreferrer"
+            ><i class="bx bxl-instagram" aria-hidden="true"></i> Instagram</a
+          >
         </div>
       </div>
+      <a class="console-scroll-cue" href="#about"
+        >Scroll to explore <i class="bx bx-chevron-down" aria-hidden="true"></i
+      ></a>
     </section>
 
     <!-- ==================== ABOUT ==================== -->
     <section id="about" class="py-20 bg-gray-50">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          <div class="reveal">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">About Me</h2>
+        <div
+          class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16 about-intro-layout"
+        >
+          <h2
+            class="text-3xl font-bold text-gray-900 mb-6 reveal about-heading"
+          >
+            About Me
+          </h2>
+          <div class="reveal reveal-delay-2 about-photo">
+            <div
+              class="about-portrait aspect-square rounded-2xl overflow-hidden bg-gray-200 shadow-inner relative"
+            >
+              <img
+                src="./assets/img/1741080136349.jpg"
+                alt="Frankie"
+                class="w-full h-full object-cover"
+                onerror="this.style.display = 'none'"
+              />
+              <div
+                class="absolute inset-0 flex items-center justify-center -z-10"
+              >
+                <i class="bx bx-user text-6xl text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+          <div class="reveal about-copy">
             <p class="text-gray-600 mb-4 leading-relaxed">
               I am a Backend &amp; Fullstack Developer with experience in
               building scalable systems and enterprise applications.
@@ -508,23 +859,6 @@
               <div>
                 <span class="font-bold text-gray-900 block mb-1">Major</span
                 >Informatics Engineering
-              </div>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-2">
-            <div
-              class="aspect-square rounded-2xl overflow-hidden bg-gray-200 shadow-inner relative"
-            >
-              <img
-                src="./assets/img/1741080136349.jpg"
-                alt="Frankie"
-                class="w-full h-full object-cover"
-                onerror="this.style.display = 'none'"
-              />
-              <div
-                class="absolute inset-0 flex items-center justify-center -z-10"
-              >
-                <i class="bx bx-user text-6xl text-gray-400"></i>
               </div>
             </div>
           </div>
@@ -589,9 +923,11 @@
         <!-- Experience -->
         <div class="reveal mb-14">
           <h2 class="text-3xl font-bold text-gray-900 mb-8">Experience</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="experience-timeline" id="experience-timeline">
             <!-- Farmer -->
-            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+            <div
+              class="experience-entry bg-gray-50 rounded-2xl p-6 border border-gray-100"
+            >
               <div class="flex gap-4 items-start mb-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0"
@@ -626,7 +962,9 @@
               </div>
             </div>
             <!-- BCA -->
-            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+            <div
+              class="experience-entry bg-gray-50 rounded-2xl p-6 border border-gray-100"
+            >
               <div class="flex gap-4 items-start mb-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
@@ -723,7 +1061,9 @@
             </div>
 
             <!-- Alfamart -->
-            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+            <div
+              class="experience-entry bg-gray-50 rounded-2xl p-6 border border-gray-100"
+            >
               <div class="flex gap-4 items-start mb-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
@@ -991,33 +1331,38 @@
           <button
             data-filter="all"
             class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-900 text-white"
+            aria-pressed="true"
+            type="button"
           >
             All
           </button>
           <button
             data-filter="web"
             class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+            aria-pressed="false"
+            type="button"
           >
             Web
           </button>
           <button
             data-filter="mobile"
             class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+            aria-pressed="false"
+            type="button"
           >
             Mobile
           </button>
           <button
             data-filter="acdc"
             class="filter-btn px-5 py-2 rounded-full text-sm font-medium transition bg-gray-100 text-gray-600 hover:bg-gray-200"
+            aria-pressed="false"
+            type="button"
           >
             Academic Projects
           </button>
         </div>
 
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          id="portfolio-grid"
-        >
+        <div class="console-project-rail" id="portfolio-grid">
           <!-- SalesTrack -->
           <div
             class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-1"
@@ -1274,7 +1619,7 @@
             Notable Internal Projects
           </h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="console-project-rail notable-project-rail">
           <div
             class="notable-card reveal reveal-delay-1 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
           >
@@ -1379,7 +1724,7 @@
     </section>
 
     <!-- ==================== FOOTER ==================== -->
-    <footer class="bg-white border-t border-gray-200 py-10">
+    <footer class="bg-white border-t border-gray-200 py-10 reveal">
       <div
         class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6"
       >
@@ -1436,7 +1781,12 @@
       });
 
       // ── Fancybox ──
-      Fancybox.bind("[data-fancybox]", { animated: true, dragToClose: false });
+      if (window.Fancybox) {
+        Fancybox.bind("[data-fancybox]", {
+          animated: true,
+          dragToClose: false,
+        });
+      }
 
       // ── Back to top ──
       const btt = document.getElementById("btn-back-to-top");
@@ -1479,6 +1829,41 @@
           menuIcon.classList.replace("bx-x", "bx-menu");
         }),
       );
+
+      // Theme toggle: the chosen mode persists across visits when storage is available.
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      const themeLabel = document.getElementById("theme-label");
+      let themeTransitionTimer;
+      function updateThemeButton() {
+        const isDark = document.documentElement.dataset.theme === "dark";
+        const nextTheme = isDark ? "light" : "dark";
+        themeToggle.setAttribute("aria-pressed", String(isDark));
+        themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+        themeLabel.textContent = `${nextTheme[0].toUpperCase()}${nextTheme.slice(1)} theme`;
+        themeIcon.className = `bx ${isDark ? "bx-sun" : "bx-moon"}`;
+      }
+      updateThemeButton();
+      themeToggle.addEventListener("click", () => {
+        const nextTheme =
+          document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        const root = document.documentElement;
+        clearTimeout(themeTransitionTimer);
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          root.classList.add("theme-transition");
+          themeTransitionTimer = setTimeout(
+            () => root.classList.remove("theme-transition"),
+            300,
+          );
+        }
+        document.documentElement.dataset.theme = nextTheme;
+        try {
+          localStorage.setItem("portfolio-theme", nextTheme);
+        } catch {
+          // The current page theme still changes when storage is unavailable.
+        }
+        updateThemeButton();
+      });
 
       // ── Typing effect ──
       const phrases = [
@@ -1530,29 +1915,34 @@
         });
       }
 
-      // ── Scroll reveal ──
-      const revealObs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("visible");
-              revealObs.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.12 },
-      );
-      document
-        .querySelectorAll(".reveal")
-        .forEach((el) => revealObs.observe(el));
+      // Scroll-linked reveal: opacity and offset follow the element's position,
+      // so reversing the scroll naturally reverses the fade.
+      const revealElements = document.querySelectorAll(".reveal");
 
       // ── Portfolio filter ──
       const filterBtns = document.querySelectorAll(".filter-btn");
       const cards = document.querySelectorAll(".port-card");
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      cards.forEach((card) => {
+        const preview = card.querySelector("a[data-fancybox]");
+        const title = card.querySelector("h3")?.textContent.trim();
+        if (!preview || !title) return;
+        const overlay = document.createElement("span");
+        overlay.className = "project-title-overlay";
+        overlay.textContent = title;
+        overlay.setAttribute("aria-hidden", "true");
+        preview.append(overlay);
+      });
+
+      const projectRail = document.getElementById("portfolio-grid");
 
       filterBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
           filterBtns.forEach((b) => {
+            b.setAttribute("aria-pressed", String(b === btn));
             b.classList.remove("bg-gray-900", "text-white");
             b.classList.add(
               "bg-gray-100",
@@ -1568,12 +1958,201 @@
           );
 
           const f = btn.dataset.filter;
-          cards.forEach((card) => {
+          projectRail.querySelectorAll(".port-card").forEach((card) => {
             const show = f === "all" || card.dataset.cat.includes(f);
             card.style.display = show ? "block" : "none";
+            card.classList.remove("filter-enter");
+            if (show && !reduceMotion) {
+              void card.offsetWidth;
+              card.classList.add("filter-enter");
+            }
           });
+          scheduleScrollIndicators();
         });
       });
+
+      // Page progress and the experience timeline share one scroll update.
+      const pageProgress = document.getElementById("scroll-progress");
+      const progressFill = pageProgress.querySelector("span");
+      const experienceTimeline = document.getElementById("experience-timeline");
+      let scrollUpdatePending = false;
+      function updateScrollIndicators() {
+        const scrollRange =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pageRatio =
+          scrollRange > 0
+            ? Math.min(1, Math.max(0, window.scrollY / scrollRange))
+            : 0;
+        progressFill.style.transform = `scaleX(${pageRatio})`;
+        pageProgress.setAttribute(
+          "aria-valuenow",
+          String(Math.round(pageRatio * 100)),
+        );
+
+        const timelineTop =
+          experienceTimeline.getBoundingClientRect().top + window.scrollY;
+        const timelineHeight = experienceTimeline.offsetHeight;
+        const timelineRatio = Math.min(
+          1,
+          Math.max(
+            0,
+            (window.scrollY + window.innerHeight * 0.65 - timelineTop) /
+              timelineHeight,
+          ),
+        );
+        experienceTimeline.style.setProperty(
+          "--timeline-progress",
+          `${timelineRatio * 100}%`,
+        );
+
+        const viewportHeight = window.innerHeight;
+        const fadeDistance = Math.max(120, viewportHeight * 0.24);
+        const revealMeasurements = Array.from(revealElements, (element) => ({
+          element,
+          bounds: element.getBoundingClientRect(),
+        }));
+        revealMeasurements.forEach(({ element, bounds }) => {
+          if (reduceMotion) {
+            element.style.opacity = "1";
+            element.style.setProperty("--reveal-offset", "0px");
+            return;
+          }
+
+          const fadeIn = Math.min(
+            1,
+            Math.max(0, (viewportHeight * 0.82 - bounds.top) / fadeDistance),
+          );
+          const fadeOut = Math.min(
+            1,
+            Math.max(0, (bounds.bottom - viewportHeight * 0.18) / fadeDistance),
+          );
+          const rawProgress = Math.min(fadeIn, fadeOut);
+          const easedProgress =
+            rawProgress * rawProgress * (3 - 2 * rawProgress);
+          element.style.opacity = String(easedProgress);
+          element.style.setProperty(
+            "--reveal-offset",
+            `${(1 - easedProgress) * 14}px`,
+          );
+        });
+        scrollUpdatePending = false;
+      }
+      function scheduleScrollIndicators() {
+        if (scrollUpdatePending) return;
+        scrollUpdatePending = true;
+        requestAnimationFrame(updateScrollIndicators);
+      }
+      window.addEventListener("scroll", scheduleScrollIndicators, {
+        passive: true,
+      });
+      window.addEventListener("resize", scheduleScrollIndicators);
+      updateScrollIndicators();
+    </script>
+    <script>
+      // Self-contained project marquee, independent of the rest of the page scripts.
+      (() => {
+        document.querySelectorAll(".console-project-rail").forEach((rail) => {
+          if (!rail.children.length) return;
+          const originals = Array.from(rail.children);
+          const track = document.createElement("div");
+          track.className = "console-project-track";
+          const group = document.createElement("div");
+          group.className = "console-project-group";
+          originals.forEach((card) => group.append(card));
+          track.append(group);
+
+          const copy = group.cloneNode(true);
+          copy.setAttribute("aria-hidden", "true");
+          copy.querySelectorAll("a, button").forEach((control) => {
+            control.tabIndex = -1;
+          });
+          copy.querySelectorAll(".reveal").forEach((card) => {
+            card.classList.remove(
+              "reveal",
+              "reveal-delay-1",
+              "reveal-delay-2",
+              "reveal-delay-3",
+              "reveal-delay-4",
+              "filter-enter",
+            );
+            card.style.opacity = "1";
+            card.style.transform = "none";
+          });
+          track.append(copy);
+          rail.replaceChildren(track);
+
+          let paused = false;
+          let gesture = null;
+          let dragged = false;
+          let suppressClickUntil = 0;
+          track.addEventListener("focusin", () => {
+            paused = true;
+            track.style.animationPlayState = "paused";
+          });
+          track.addEventListener("focusout", () => {
+            paused = false;
+            track.style.animationPlayState = "running";
+          });
+          rail.addEventListener("pointerdown", (event) => {
+            if (event.button !== 0) return;
+            const animation = track.getAnimations()[0];
+            if (!animation) return;
+            animation.pause();
+            gesture = {
+              id: event.pointerId,
+              x: event.clientX,
+              y: event.clientY,
+              time: Number(animation.currentTime) || 0,
+              duration: Number(animation.effect.getTiming().duration) || 44000,
+              width: group.getBoundingClientRect().width,
+            };
+            dragged = false;
+          });
+          rail.addEventListener(
+            "pointermove",
+            (event) => {
+              if (!gesture || gesture.id !== event.pointerId) return;
+              const deltaX = event.clientX - gesture.x;
+              const deltaY = event.clientY - gesture.y;
+              if (Math.abs(deltaX) < 6 || Math.abs(deltaX) <= Math.abs(deltaY))
+                return;
+              event.preventDefault();
+              if (!dragged && rail.setPointerCapture)
+                rail.setPointerCapture(event.pointerId);
+              dragged = true;
+              const shift = gesture.width
+                ? (deltaX / gesture.width) * gesture.duration
+                : 0;
+              const position =
+                (((gesture.time - shift) % gesture.duration) +
+                  gesture.duration) %
+                gesture.duration;
+              track.getAnimations()[0].currentTime = position;
+            },
+            { passive: false },
+          );
+          const finishGesture = (event) => {
+            if (!gesture || gesture.id !== event.pointerId) return;
+            if (dragged) suppressClickUntil = Date.now() + 400;
+            gesture = null;
+            if (!paused) {
+              track.style.animationPlayState = "running";
+              track.getAnimations()[0]?.play();
+            }
+          };
+          rail.addEventListener("pointerup", finishGesture);
+          rail.addEventListener("pointercancel", finishGesture);
+          rail.addEventListener(
+            "click",
+            (event) => {
+              if (Date.now() >= suppressClickUntil) return;
+              event.preventDefault();
+              event.stopImmediatePropagation();
+            },
+            true,
+          );
+        });
+      })();
     </script>
   </body>
 </html>
