@@ -96,18 +96,25 @@
         margin-top: 18px;
       }
       .loader-bar-fill {
+        width: 38%;
         height: 100%;
         background: linear-gradient(90deg, #2563eb, #06b6d4);
         border-radius: 99px;
-        animation: loadFill 1.4s ease forwards;
+        animation: loadFill 1.2s ease-in-out infinite alternate;
       }
       @keyframes loadFill {
         from {
-          width: 0;
+          transform: translateX(-105%);
         }
         to {
-          width: 100%;
+          transform: translateX(265%);
         }
+      }
+      #preloader.is-loaded .loader-bar-fill {
+        width: 100%;
+        transform: none;
+        animation: none;
+        transition: width 0.2s ease;
       }
 
       /* ===== FADE IN UP (scroll reveal) ===== */
@@ -822,7 +829,7 @@
               class="about-portrait aspect-square rounded-2xl overflow-hidden bg-gray-200 shadow-inner relative"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/1741080136349.jpg"
                 alt="Frankie"
@@ -950,7 +957,7 @@
               <!-- Photos -->
               <div class="flex gap-2 flex-wrap">
                 <img
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   src="./assets/img/farmer-1.jpg"
                   alt=""
@@ -958,7 +965,7 @@
                   onerror="this.style.display = 'none'"
                 />
                 <img
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   src="./assets/img/farmer-2.jpg"
                   alt=""
@@ -976,7 +983,7 @@
                   class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
                 >
                   <img
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     src="./assets/img/logo/bca.png"
                     alt="BCA"
@@ -1022,7 +1029,7 @@
                   data-fancybox="bca"
                   class="cursor-zoom-in"
                 >
-                  <img loading="lazy" decoding="async"
+                  <img loading="eager" decoding="async"
                     src="./assets/img/documentation/bca-1.jpg"
                     alt=""
                     class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
@@ -1034,7 +1041,7 @@
                   data-fancybox="bca"
                   class="cursor-zoom-in"
                 >
-                  <img loading="lazy" decoding="async"
+                  <img loading="eager" decoding="async"
                     src="./assets/img/documentation/bca-2.jpg"
                     alt=""
                     class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
@@ -1046,7 +1053,7 @@
                   data-fancybox="bca"
                   class="cursor-zoom-in"
                 >
-                  <img loading="lazy" decoding="async"
+                  <img loading="eager" decoding="async"
                     src="./assets/img/documentation/bca-3.jpg"
                     alt=""
                     class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
@@ -1058,7 +1065,7 @@
                   data-fancybox="bca"
                   class="cursor-zoom-in"
                 >
-                  <img loading="lazy" decoding="async"
+                  <img loading="eager" decoding="async"
                     src="./assets/img/bca-4.jpg"
                     alt=""
                     class="h-20 w-28 object-cover rounded-lg border border-gray-200 hover:opacity-80 transition"
@@ -1077,7 +1084,7 @@
                   class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
                 >
                   <img
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     src="./assets/img/logo/alfamart.png"
                     alt="Alfamart"
@@ -1121,13 +1128,13 @@
               </ul>
               <!-- Photos
               <div class="flex gap-2 flex-wrap">
-                <img loading="lazy" decoding="async"
+                <img loading="eager" decoding="async"
                   src="./assets/img/alfamart-1.jpg"
                   alt=""
                   class="h-20 w-28 object-cover rounded-lg border border-gray-200"
                   onerror="this.style.display = 'none'"
                 />
-                <img loading="lazy" decoding="async"
+                <img loading="eager" decoding="async"
                   src="./assets/img/alfamart-2.jpg"
                   alt=""
                   class="h-20 w-28 object-cover rounded-lg border border-gray-200"
@@ -1150,7 +1157,7 @@
                 class="w-12 h-12 rounded-xl bg-white border border-gray-200 shadow-sm flex items-center justify-center flex-shrink-0 overflow-hidden"
               >
                 <img
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   src="./assets/img/logo-uksw.png"
                   alt="UKSW"
@@ -1387,7 +1394,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/salestrack.png"
                 alt="SalesTrack"
@@ -1424,7 +1431,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/sukhafa.png"
                 alt="Sukhafa App"
@@ -1462,7 +1469,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/haloapps.png"
                 alt="HaloBCA"
@@ -1500,7 +1507,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/nft.png"
                 alt="NFT"
@@ -1537,7 +1544,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/rediframedia.png"
                 alt="BookStore"
@@ -1574,7 +1581,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/wisata.png"
                 alt="Tourism"
@@ -1609,7 +1616,7 @@
               class="block h-48 bg-gray-100 overflow-hidden relative cursor-zoom-in"
             >
               <img
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 src="./assets/img/mongodb.png"
                 alt="MongoDB"
@@ -1795,8 +1802,14 @@
       document.getElementById("year").textContent = new Date().getFullYear();
 
       // ── Preloader ──
-      window.addEventListener("DOMContentLoaded", () => {
+      window.addEventListener("load", async () => {
         const pre = document.getElementById("preloader");
+        await Promise.all(
+          Array.from(document.images, (image) =>
+            image.decode().catch(() => {}),
+          ),
+        );
+        pre.classList.add("is-loaded");
         pre.style.opacity = "0";
         setTimeout(() => {
           pre.style.display = "none";
