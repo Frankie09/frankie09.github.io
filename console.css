@@ -523,10 +523,10 @@ footer {
   background: var(--console-accent);
 }
 #scroll-progress span {
-  background: #b58cff;
+  background: #ef4444;
 }
 html[data-theme="light"] #scroll-progress span {
-  background: #8654c7;
+  background: #dc2626;
 }
 #btn-back-to-top {
   border-radius: 6px !important;

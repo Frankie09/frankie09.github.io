@@ -1374,7 +1374,7 @@
           </button>
         </div>
 
-        <div class="console-project-rail" id="portfolio-grid">
+        <div id="portfolio-grid">
           <!-- SalesTrack -->
           <div
             class="port-card bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group reveal reveal-delay-1"
@@ -1645,7 +1645,7 @@
             Notable Internal Projects
           </h2>
         </div>
-        <div class="console-project-rail notable-project-rail">
+        <div class="notable-project-grid">
           <div
             class="notable-card reveal reveal-delay-1 bg-white rounded-xl p-6 shadow-sm border border-gray-100"
           >
@@ -2071,122 +2071,6 @@
       });
       window.addEventListener("resize", scheduleScrollIndicators);
       updateScrollIndicators();
-    </script>
-    <script>
-      // Self-contained project marquee, independent of the rest of the page scripts.
-      (() => {
-        document.querySelectorAll(".console-project-rail").forEach((rail) => {
-          if (!rail.children.length) return;
-          const originals = Array.from(rail.children);
-          const track = document.createElement("div");
-          track.className = "console-project-track";
-          const group = document.createElement("div");
-          group.className = "console-project-group";
-          originals.forEach((card) => group.append(card));
-          track.append(group);
-
-          const copy = group.cloneNode(true);
-          copy.setAttribute("aria-hidden", "true");
-          copy.querySelectorAll("a, button").forEach((control) => {
-            control.tabIndex = -1;
-          });
-          copy.querySelectorAll(".reveal").forEach((card) => {
-            card.classList.remove(
-              "reveal",
-              "reveal-delay-1",
-              "reveal-delay-2",
-              "reveal-delay-3",
-              "reveal-delay-4",
-              "filter-enter",
-            );
-            card.style.opacity = "1";
-            card.style.transform = "none";
-          });
-          track.append(copy);
-          track.append(copy.cloneNode(true));
-          rail.replaceChildren(track);
-
-          const updateMarqueeDistance = () => {
-            const distance = group.getBoundingClientRect().width;
-            track.style.setProperty("--marquee-shift", `${-distance}px`);
-          };
-          updateMarqueeDistance();
-          window.addEventListener("resize", updateMarqueeDistance);
-
-          let paused = false;
-          let gesture = null;
-          let dragged = false;
-          let suppressClickUntil = 0;
-          track.addEventListener("focusin", (event) => {
-            if (!event.target.matches(":focus-visible")) return;
-            paused = true;
-            track.style.animationPlayState = "paused";
-          });
-          track.addEventListener("focusout", () => {
-            if (track.querySelector(":focus-visible")) return;
-            paused = false;
-            track.style.animationPlayState = "running";
-          });
-          rail.addEventListener("pointerdown", (event) => {
-            if (event.button !== 0) return;
-            const animation = track.getAnimations()[0];
-            if (!animation) return;
-            animation.pause();
-            gesture = {
-              id: event.pointerId,
-              x: event.clientX,
-              y: event.clientY,
-              time: Number(animation.currentTime) || 0,
-              duration: Number(animation.effect.getTiming().duration) || 44000,
-              width: group.getBoundingClientRect().width,
-            };
-            dragged = false;
-          });
-          rail.addEventListener(
-            "pointermove",
-            (event) => {
-              if (!gesture || gesture.id !== event.pointerId) return;
-              const deltaX = event.clientX - gesture.x;
-              const deltaY = event.clientY - gesture.y;
-              if (Math.abs(deltaX) < 6 || Math.abs(deltaX) <= Math.abs(deltaY))
-                return;
-              event.preventDefault();
-              if (!dragged && rail.setPointerCapture)
-                rail.setPointerCapture(event.pointerId);
-              dragged = true;
-              const shift = gesture.width
-                ? (deltaX / gesture.width) * gesture.duration
-                : 0;
-              const position =
-                (((gesture.time - shift) % gesture.duration) +
-                  gesture.duration) %
-                gesture.duration;
-              track.getAnimations()[0].currentTime = position;
-            },
-            { passive: false },
-          );
-          const finishGesture = (event) => {
-            if (!gesture || gesture.id !== event.pointerId) return;
-            if (dragged) suppressClickUntil = Date.now() + 400;
-            gesture = null;
-            if (!paused) {
-              track.style.animationPlayState = "running";
-              track.getAnimations()[0]?.play();
-            }
-          };
-          rail.addEventListener("pointerup", finishGesture);
-          rail.addEventListener("pointercancel", finishGesture);
-          rail.addEventListener(
-            "click",
-            (event) => {
-              if (Date.now() >= suppressClickUntil) return;
-              event.preventDefault();
-              event.stopImmediatePropagation();
-            },
-            true,
-          );
-        });
-      })();
     </script>
   </body>
 </html>
