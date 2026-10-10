@@ -448,12 +448,21 @@ footer :is(p, a) {
 .notable-card:hover {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12) !important;
 }
-.port-card {
-  flex: 0 0 clamp(260px, 31vw, 370px);
-  scroll-snap-align: start;
+#portfolio-grid,
+.notable-project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 24px;
 }
+#portfolio-grid {
+  padding: 8px 3px 18px;
+}
+.notable-project-grid {
+  align-items: stretch;
+}
+.port-card,
 .notable-card {
-  flex: 0 0 clamp(260px, 31vw, 370px);
+  min-width: 0;
 }
 .port-card > a {
   height: 220px !important;
@@ -463,22 +472,6 @@ footer :is(p, a) {
 }
 .port-card img {
   object-fit: cover;
-}
-.console-project-rail {
-  overflow: hidden;
-  padding: 8px 3px 18px;
-  touch-action: pan-y;
-}
-.console-project-track {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-}
-.console-project-group {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 18px;
-  padding-right: 18px;
 }
 #filter-row {
   justify-content: flex-start;
@@ -530,7 +523,10 @@ footer {
   background: var(--console-accent);
 }
 #scroll-progress span {
-  background: var(--console-accent);
+  background: #b58cff;
+}
+html[data-theme="light"] #scroll-progress span {
+  background: #8654c7;
 }
 #btn-back-to-top {
   border-radius: 6px !important;
@@ -597,12 +593,6 @@ footer {
   body > #notable {
     padding-top: 58px;
     padding-bottom: 58px;
-  }
-  .port-card {
-    flex-basis: min(82vw, 350px);
-  }
-  .notable-card {
-    flex-basis: min(82vw, 350px);
   }
 }
 @media (max-width: 1023px) {
