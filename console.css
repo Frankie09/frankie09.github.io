@@ -472,7 +472,6 @@ footer :is(p, a) {
 .console-project-track {
   display: flex;
   width: max-content;
-  animation: project-marquee 44s linear infinite;
   will-change: transform;
 }
 .console-project-group {
@@ -480,21 +479,6 @@ footer :is(p, a) {
   flex: 0 0 auto;
   gap: 18px;
   padding-right: 18px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .console-project-track:hover {
-    animation-play-state: paused;
-  }
-}
-@keyframes project-marquee {
-  to {
-    transform: translateX(var(--marquee-shift));
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .console-project-track {
-    animation-duration: 72s;
-  }
 }
 #filter-row {
   justify-content: flex-start;
@@ -648,9 +632,5 @@ footer {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-  .console-project-track {
-    animation-duration: 72s !important;
-    animation-iteration-count: infinite !important;
   }
 }
