@@ -403,35 +403,6 @@
         background: #2563eb;
         color: white;
       }
-      #theme-toggle {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.5rem 0.65rem;
-        border: 1px solid #d1d5db;
-        border-radius: 0.5rem;
-        background: transparent;
-        color: #374151;
-        font: inherit;
-        font-size: 0.875rem;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-      #theme-toggle:hover {
-        background: rgba(107, 114, 128, 0.1);
-      }
-      #theme-toggle:focus-visible {
-        outline: 3px solid #2563eb;
-        outline-offset: 3px;
-      }
-      #theme-toggle i {
-        font-size: 1.1rem;
-      }
-      html[data-theme="dark"] #theme-toggle {
-        color: #f3f4f6;
-        border-color: #4b5563;
-      }
       html.theme-transition body,
       html.theme-transition #navbar,
       html.theme-transition #mobile-menu,
@@ -691,15 +662,6 @@
               >Portfolio</a
             >
           </div>
-          <button
-            id="theme-toggle"
-            type="button"
-            aria-label="Switch to dark theme"
-            aria-pressed="false"
-          >
-            <i class="bx bx-moon" id="theme-icon" aria-hidden="true"></i>
-            <span id="theme-label">Dark theme</span>
-          </button>
           <div class="md:hidden">
             <button
               id="mobile-menu-btn"
@@ -736,6 +698,19 @@
         >
       </div>
     </nav>
+
+    <button
+      id="theme-toggle"
+      class="theme-switch"
+      type="button"
+      role="switch"
+      aria-label="Dark theme"
+      aria-checked="true"
+    >
+      <i class="bx bx-sun theme-switch-sun" aria-hidden="true"></i>
+      <span class="theme-switch-thumb" aria-hidden="true"></span>
+      <i class="bx bx-moon theme-switch-moon" aria-hidden="true"></i>
+    </button>
 
     <!-- ==================== HERO ==================== -->
     <section id="home" class="console-home">
@@ -1757,7 +1732,7 @@
     </section>
 
     <!-- ==================== FOOTER ==================== -->
-    <footer class="bg-white border-t border-gray-200 py-10 reveal">
+    <footer class="bg-white border-t border-gray-200 py-10">
       <div
         class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6"
       >
@@ -1869,16 +1844,14 @@
 
       // Theme toggle: the chosen mode persists across visits when storage is available.
       const themeToggle = document.getElementById("theme-toggle");
-      const themeIcon = document.getElementById("theme-icon");
-      const themeLabel = document.getElementById("theme-label");
       let themeTransitionTimer;
       function updateThemeButton() {
         const isDark = document.documentElement.dataset.theme === "dark";
-        const nextTheme = isDark ? "light" : "dark";
-        themeToggle.setAttribute("aria-pressed", String(isDark));
-        themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-        themeLabel.textContent = `${nextTheme[0].toUpperCase()}${nextTheme.slice(1)} theme`;
-        themeIcon.className = `bx ${isDark ? "bx-sun" : "bx-moon"}`;
+        themeToggle.setAttribute("aria-checked", String(isDark));
+        themeToggle.setAttribute(
+          "aria-label",
+          `${isDark ? "Dark" : "Light"} theme`,
+        );
       }
       updateThemeButton();
       themeToggle.addEventListener("click", () => {
