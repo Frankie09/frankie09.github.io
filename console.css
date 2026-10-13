@@ -542,6 +542,61 @@ html[data-theme="light"] #scroll-progress span {
   border-radius: 6px !important;
   box-shadow: none !important;
 }
+.floating-3d-link {
+  position: fixed;
+  z-index: 49;
+  right: 24px;
+  bottom: 88px;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(100, 223, 255, 0.72);
+  border-radius: 15px;
+  color: #c8f5ff;
+  background: rgba(7, 20, 36, 0.94);
+  box-shadow: 0 8px 26px rgba(0, 170, 255, 0.24);
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.94);
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease,
+    box-shadow 0.22s ease;
+}
+.floating-3d-link.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.floating-3d-link:hover,
+.floating-3d-link:focus-visible {
+  color: #fff;
+  box-shadow: 0 9px 30px rgba(0, 190, 255, 0.42);
+  outline: 2px solid rgba(100, 223, 255, 0.4);
+  outline-offset: 3px;
+}
+.floating-3d-link > i {
+  font-size: 25px;
+  line-height: 1;
+}
+.floating-3d-link > span {
+  position: absolute;
+  right: -6px;
+  bottom: -5px;
+  padding: 2px 5px;
+  border: 1px solid rgba(100, 223, 255, 0.7);
+  border-radius: 5px;
+  color: #071422;
+  background: #73e8ff;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
 
 @media (max-width: 700px) {
   .console-home {
@@ -581,6 +636,12 @@ html[data-theme="light"] #scroll-progress span {
   .console-scroll-cue {
     right: 22px;
     bottom: 23px;
+  }
+  .floating-3d-link {
+    right: 18px;
+    bottom: 82px;
+    width: 50px;
+    height: 50px;
   }
   body > #about,
   body > #experience,
